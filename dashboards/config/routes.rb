@@ -8,8 +8,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "static_pages#index"
-  # get "contas" => "contas#index"
-  # get "signup" => "signup#new"
-  # post "signup" => "signup#create"
+  get "entry" => "sessions#new"
+  post "entry" => "sessions#create"
   resources :accounts, only: [:new, :create]
 end

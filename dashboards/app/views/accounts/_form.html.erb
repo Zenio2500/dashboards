@@ -9,19 +9,19 @@
     <div>
         <%= f.label :email %> (Tamanho Máximo: 25 caracteres)
     </div>
-    <%= f.text_field :email, class: "form-control" %>
+    <%= f.email_field :email, class: "form-control" %>
 </div>
         
 <div class="form-group">
     <div>
         <%= f.label :senha %> (Tamanho Mínimo: 7 caracteres)
     </div>
-    <%= f.text_field :password, class: "form-control" %>
+    <%= f.password_field :password, class: "form-control" %>
 </div>
 
 <div class="form-group">
     <div>
         <%= f.label :confirmação_de_Senha %>
     </div>
-    <%= f.text_field :password_confirmation, class: "form-control" %>
+    <%= f.password_field :password_confirmation, class: "form-control" %>
 </div>
