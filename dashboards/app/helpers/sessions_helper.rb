@@ -5,15 +5,15 @@ module SessionsHelper
   end
   
   def sign_out()
-      session.delete(:account_id)
+    session.delete(:account_id)
   end
   
-    def current_account()
-      @current_account ||= Account.find_by(id: session[:account_id])
-    end
-
-    def account_signed_in?
-      !current_account.nil?
-    end
-
+  def current_account()
+    @current_account ||= Account.find_by(id: session[:account_id])
   end
+
+  def account_signed_in?
+    !current_account.nil?
+  end
+
+end

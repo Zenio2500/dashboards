@@ -8,7 +8,13 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "static_pages#index"
+  get "confirm/edit" => "accounts#confirm_edit_get"
+  post "confirm/edit" => "accounts#confirm_edit_post"
+  get "confirm/destroy" => "accounts#confirm_destroy_get"
+  post "confirm/destroy" => "accounts#confirm_destroy_post"
+  get "destroyer" => "accounts#destroyer"
   get "entry" => "sessions#new"
   post "entry" => "sessions#create"
-  resources :accounts, only: [:new, :create]
+  get "exit" => "sessions#destroy"
+  resources :accounts, only: [:show, :new, :edit, :create, :destroy, :update]
 end

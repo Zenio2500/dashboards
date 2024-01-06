@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Editar Conta</h1>
+    </div>
+
+<div class="col-md-6 col-md-offset-3 col-xs-12">
+
+        <%= form_with model: @current_account do |form| %>
+
+            <%= render "form", f:form %>
+
+            <%= form.submit "Editar", class: "btn btn-primary" %>
+
+        <% end %>
+
+    </div>
+</div>

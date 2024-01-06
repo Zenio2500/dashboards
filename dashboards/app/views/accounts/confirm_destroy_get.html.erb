@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Por favor, digite seus e-mail e senha!</h1>
+    </div>
+
+    <div class="col-md-6 col-md-offset-3 col-xs-12">
+        
+        <%= form_for :session, url: confirm_destroy_path, method: :post do |form| %>
+            
+            <%= render "confirm_form", f:form %>
+
+            <%= form.submit 'Confirmar', class: 'btn btn-primary' %>
+
+        <% end %>
+        
+    </div>
+</div>
