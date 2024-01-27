@@ -1,0 +1,25 @@
+<nav class="navbar navbar-inverse navbar-static-top">
+
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <%= link_to "Dashboards", root_url, class: "navbar-brand" %>
+    </div>
+
+  <!-- Conteudo exibido em telas maiores e que serao escondidos em telas menores -->
+  <div class="collapse navbar-collapse" id="expanded-menu">
+
+    <ul class="nav navbar-nav navbar-right">
+
+      <% if account_signed_in? %>
+        <li>
+          <%= link_to "Sair", exit_path %>
+        </li>
+      <% end %>
+
+    </ul>
+
+  </div>
+
+  </div>
+
+</nav>

@@ -11,13 +11,20 @@
   </head>
 
   <body>
-    <div>
+
+    <%= render "layouts/header" %>
+
+    <h2>
         <% flash.each do |message_type, message| %>
-          <div class="alert">
+          <div class="notice">
           <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             <%= message %>
         <% end %>
-    </div>
+    </h2>
+
     <%= yield %>
+
+    <%= render "layouts/footer" %>
+
   </body>
 </html>

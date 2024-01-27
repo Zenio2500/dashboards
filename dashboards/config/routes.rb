@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "static_pages#index"
+  get "about" => "static_pages#about"
+  get "contact" => "static_pages#contact"
   get "confirm/edit" => "accounts#confirm_edit_get"
   post "confirm/edit" => "accounts#confirm_edit_post"
   get "confirm/destroy" => "accounts#confirm_destroy_get"

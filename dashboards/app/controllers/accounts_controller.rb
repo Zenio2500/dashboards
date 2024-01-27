@@ -21,6 +21,7 @@ class AccountsController < ApplicationController
             account = Account.find_by(email: params[:session][:email])
             if account && account.authenticate(params[:session][:password])
                 flash[:notice] = "Confirmação de Usuário bem-sucedida!"
+                session[:permission] = 1
                 redirect_to edit_account_path(current_account)
             else
                 flash[:notice] = "Confirmação de Usuário mal-sucedida!"
@@ -43,6 +44,7 @@ class AccountsController < ApplicationController
             account = Account.find_by(email: params[:session][:email])
             if account && account.authenticate(params[:session][:password])
                 flash[:notice] = "Confirmação de Usuário bem-sucedida!"
+                session[:permission] = 1
                 redirect_to destroyer_path
             else
                 flash[:notice] = "Confirmação de Usuário mal-sucedida!"
@@ -82,9 +84,10 @@ class AccountsController < ApplicationController
     end
 
     def edit
-        if !account_signed_in?
+        if !account_signed_in? || session[:permission] == 0
             redirect_to entry_path(current_account)
         end
+        session[:permission] = 0
     end
 
     def update
@@ -100,9 +103,10 @@ class AccountsController < ApplicationController
     end
 
     def destroyer
-        if !account_signed_in?
+        if !account_signed_in? || session[:permission] == 0
             redirect_to entry_path(current_account)
         end
+        session[:permission] = 0
     end
 
     def destroy

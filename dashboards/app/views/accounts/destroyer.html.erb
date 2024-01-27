@@ -1,9 +1,5 @@
-<div>
-    Depois disso, não haverá volta.
-</div>
-
-<%= form_for :session, url: account_path(current_account), method: :delete do |form| %>
-
-    <%= form.submit 'Excluir Conta', class: 'btn btn-primary' %>
-
-<% end %>
+ <%= form_for :session, url: account_path(current_account), method: :delete do |form| %>
+        <p>
+        <%= form.submit 'Excluir Conta', class: 'btn btn-primary btn-lg' %>
+        </p>
+ <% end %>

@@ -1,0 +1,18 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+h1{
+    text-align: center;
+}
+
+p{
+    text-align: center;
+}
+
+div{
+    text-align: center;
+}
+
+div > div {
+    display: inline-block;
+}

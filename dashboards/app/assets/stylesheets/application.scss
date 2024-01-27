@@ -1,0 +1,75 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+ /* "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"*/
+ @import "bootstrap-sprockets";
+ @import "bootstrap";
+
+ $gray-medium-light: #EAEAEA;
+
+ /* The notice message box */
+ .notice {
+  padding: 15px;
+  margin-left: 700px;
+  margin-right: 700px;
+  background-color: #0077ff; /* Blue */
+  color: white;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: medium;
+  }
+
+  /* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+  footer {
+    margin-top: 45px;
+    padding-top: 5px;
+    border-top: 1px solid $gray-medium-light;
+    color: $gray-light;
+  a {
+    color: $gray;
+    /*It means: that a:hover */
+    &:hover{
+      color: $gray-darker;
+    }
+  }
+  small {
+    float: left;
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 15px;
+    }
+  }
+  }

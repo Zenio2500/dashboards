@@ -1,27 +1,35 @@
 <div class="form-group">
     <div>
-        <%= f.label :nome %> (Tamanho Máximo: 50 caracteres)
+        <%= f.label :nome %>: (Tamanho Máximo: 50 caracteres)
     </div>
-    <%= f.text_field :name, class: "form-control" %>
+    <div>
+        <%= f.text_field :name, class: "form-control" %>
+    </div>
 </div>
         
 <div class="form-group">
     <div>
-        <%= f.label :email %> (Tamanho Máximo: 25 caracteres)
+        <%= f.label :email %>: (Tamanho Máximo: 25 caracteres)
     </div>
-    <%= f.email_field :email, class: "form-control" %>
+    <div>
+        <%= f.email_field :email, class: "form-control" %>
+    </div>
 </div>
         
 <div class="form-group">
     <div>
-        <%= f.label :senha %> (Tamanho Mínimo: 7 caracteres)
+        <%= f.label :senha %>: (Tamanho Mínimo: 07 caracteres)
     </div>
-    <%= f.password_field :password, class: "form-control" %>
+    <div>
+        <%= f.password_field :password, class: "form-control" %>
+    </div>
 </div>
 
 <div class="form-group">
     <div>
-        <%= f.label :confirmação_de_Senha %>
+        <%= f.label :confirmação_de_Senha %>: (Repita a senha)
     </div>
-    <%= f.password_field :password_confirmation, class: "form-control" %>
+    <div>
+        <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>    
 </div>
