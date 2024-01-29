@@ -1,0 +1,15 @@
+<h1>Dashboards</h1>
+
+<div id="dashboards">
+  <% @dashboards.each do |dashboard| %>
+      <p>
+        <div class="dashboard">
+          <strong>Nome:</strong>
+          <%= link_to dashboard.name, account_dashboard_path(current_account, dashboard) %>
+          <%= button_to "Excluir", @dashboard, method: :delete %>
+        </div>
+      </p>
+      <% end %>
+
+    <%= link_to "Novo Dashboard", new_dashboard_path, class: 'btn btn-primary btn-lg' %>
+</div>

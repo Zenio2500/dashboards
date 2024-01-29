@@ -19,4 +19,8 @@ Rails.application.routes.draw do
   post "entry" => "sessions#create"
   get "exit" => "sessions#destroy"
   resources :accounts, only: [:show, :new, :edit, :create, :destroy, :update]
+  resources :accounts do
+    resources :dashboards, only: [:index, :show]
+  end
+  resources :dashboards, only: [:new, :create]
 end

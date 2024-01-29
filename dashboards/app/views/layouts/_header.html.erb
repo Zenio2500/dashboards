@@ -8,6 +8,14 @@
   <!-- Conteudo exibido em telas maiores e que serao escondidos em telas menores -->
   <div class="collapse navbar-collapse" id="expanded-menu">
 
+    <ul class="nav navbar-nav">
+      <% if account_signed_in? %>
+        <li class="active">
+          <%= link_to "Menu", account_path(current_account) %>
+        </li>
+      <% end %>
+    </ul>
+
     <ul class="nav navbar-nav navbar-right">
 
       <% if account_signed_in? %>

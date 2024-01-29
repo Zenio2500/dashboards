@@ -1,0 +1,8 @@
+<% @dashboard = Dashboard.find_by(id: params["id"]) %>
+<h1>
+  <%= @dashboard.name %>
+</h1>
+
+<div>
+  <%= link_to "Back to dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-lg' %>
+</div>

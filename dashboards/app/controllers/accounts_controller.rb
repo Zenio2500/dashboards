@@ -92,7 +92,6 @@ class AccountsController < ApplicationController
 
     def update
         pam = account_params()
-        puts current_account.password
         if current_account.update(pam)
           flash[:notice] = "Dados atualizados com sucesso."
           redirect_to account_path(current_account)
