@@ -20,7 +20,16 @@ Rails.application.routes.draw do
   get "exit" => "sessions#destroy"
   resources :accounts, only: [:show, :new, :edit, :create, :destroy, :update]
   resources :accounts do
-    resources :dashboards, only: [:index, :show]
+    resources :dashboards, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :dashboards do
+      resources :to_do_tasks, only: [:new, :create, :edit, :update, :destroy]
+    end
+    resources :dashboards do
+      resources :in_progress_tasks, only: [:new, :create, :edit, :update, :destroy]
+    end
+    resources :dashboards do
+      resources :finished_tasks, only: [:new, :create, :edit, :update, :destroy]
+    end
   end
-  resources :dashboards, only: [:new, :create]
+  #resources :dashboards, only: [:new, :create]
 end

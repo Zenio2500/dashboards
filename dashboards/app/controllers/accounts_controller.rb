@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+    before_action :require_logged_in_account, only: [:show, :edit, :confirm_edit_get, :confirm_edit_post, :update, :confirm_destroy_get, :confirm_destroy_post, :destroyer, :destroy]
 
     def new
         if account_signed_in?
@@ -8,9 +9,6 @@ class AccountsController < ApplicationController
     end
 
     def confirm_edit_get
-        if !account_signed_in?
-            redirect_to entry_path(current_account)
-        end
     end
 
     def confirm_edit_post
@@ -31,9 +29,6 @@ class AccountsController < ApplicationController
     end
 
     def confirm_destroy_get
-        if !account_signed_in?
-            redirect_to entry_path(current_account)
-        end
     end
 
     def confirm_destroy_post
@@ -84,7 +79,7 @@ class AccountsController < ApplicationController
     end
 
     def edit
-        if !account_signed_in? || session[:permission] == 0
+        if session[:permission] == 0
             redirect_to entry_path(current_account)
         end
         session[:permission] = 0
@@ -102,13 +97,29 @@ class AccountsController < ApplicationController
     end
 
     def destroyer
-        if !account_signed_in? || session[:permission] == 0
+        if session[:permission] == 0
             redirect_to entry_path(current_account)
         end
         session[:permission] = 0
     end
 
     def destroy
+        @dashboards = current_account.dashboards
+        @dashboards.each do |dashboard|
+            @to_do_tasks = dashboard.to_do_tasks
+            @to_do_tasks.each do |to_do_task|
+                to_do_task.destroy
+            end
+            @in_progress_tasks = dashboard.in_progress_tasks
+            @in_progress_tasks.each do |in_progress_task|
+                in_progress_task.destroy
+            end
+            @finished_tasks = dashboard.finished_tasks
+            @finished_tasks.each do |finished_task|
+                finished_task.destroy
+            end
+            dashboard.destroy
+        end
         current_account.destroy
         flash[:notice] = "Conta excluída com sucesso!"
         redirect_to root_path

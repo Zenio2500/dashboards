@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_29_124717) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_30_173624) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,5 +30,33 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_124717) do
     t.index ["account_id"], name: "index_dashboards_on_account_id"
   end
 
+  create_table "finished_tasks", force: :cascade do |t|
+    t.string "name"
+    t.date "finishDate", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "dashboard_id", null: false
+    t.index ["dashboard_id"], name: "index_finished_tasks_on_dashboard_id"
+  end
+
+  create_table "in_progress_tasks", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "dashboard_id", null: false
+    t.index ["dashboard_id"], name: "index_in_progress_tasks_on_dashboard_id"
+  end
+
+  create_table "to_do_tasks", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "dashboard_id", null: false
+    t.index ["dashboard_id"], name: "index_to_do_tasks_on_dashboard_id"
+  end
+
   add_foreign_key "dashboards", "accounts"
+  add_foreign_key "finished_tasks", "dashboards"
+  add_foreign_key "in_progress_tasks", "dashboards"
+  add_foreign_key "to_do_tasks", "dashboards"
 end

@@ -1,8 +1,79 @@
 <% @dashboard = Dashboard.find_by(id: params["id"]) %>
+<% @to_do_tasks = @dashboard.to_do_tasks %>
+<% @in_progress_tasks = @dashboard.in_progress_tasks %>
+<% @finished_tasks = @dashboard.finished_tasks %>
+
 <h1>
   <%= @dashboard.name %>
 </h1>
 
 <div>
-  <%= link_to "Back to dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-lg' %>
+  <%= link_to "Editar", edit_account_dashboard_path(current_account, @dashboard), class: 'btn btn-primary btn-sm' %>
+</div>
+
+<p></p>
+
+<div>
+  <h2>Tarefas a Fazer</h2>
+  <% @to_do_tasks.each do |to_do_task| %>
+    <p>
+        <div class="dashboard">
+          <strong>Nome:</strong>
+          <%= link_to to_do_task.name, edit_account_dashboard_to_do_task_path(current_account, @dashboard, to_do_task) %>
+          <%= form_for :session, url: account_dashboard_to_do_task_path(current_account, @dashboard, to_do_task), method: :delete do |form| %>
+            <p>
+            <%= form.submit 'Excluir', class: 'btn btn-primary' %>
+            </p>
+          <% end %>
+        </div>
+      </p>
+  <% end %>
+</div>
+
+<div>
+  <h2>Tarefas em Progresso</h2>
+  <% @in_progress_tasks.each do |in_progress_task| %>
+    <p>
+        <div class="dashboard">
+          <strong>Nome:</strong>
+          <%= link_to in_progress_task.name, edit_account_dashboard_in_progress_task_path(current_account, @dashboard, in_progress_task) %>
+          <%= form_for :session, url: account_dashboard_in_progress_task_path(current_account, @dashboard, in_progress_task), method: :delete do |form| %>
+            <p>
+            <%= form.submit 'Excluir', class: 'btn btn-primary' %>
+            </p>
+          <% end %>
+        </div>
+      </p>
+  <% end %>
+</div>
+
+<div>
+  <h2>Tarefas Concluídas</h2>
+  <% @finished_tasks.each do |finished_task| %>
+    <p>
+        <div class="dashboard">
+          <strong>Nome:</strong>
+          <%= link_to finished_task.name, edit_account_dashboard_finished_task_path(current_account, @dashboard, finished_task) %>
+          <%= form_for :session, url: account_dashboard_finished_task_path(current_account, @dashboard, finished_task), method: :delete do |form| %>
+            <p>
+            <%= form.submit 'Excluir', class: 'btn btn-primary' %>
+            </p>
+          <% end %>
+        </div>
+      </p>
+  <% end %>
+</div>
+
+<p></p>
+
+<div>
+    <%= link_to "Adicionar Tarefas a Fazer", new_account_dashboard_to_do_task_path(current_account, @dashboard), class: 'btn btn-primary' %>
+    <%= link_to "Adicionar Tarefas em Progresso", new_account_dashboard_in_progress_task_path(current_account, @dashboard), class: 'btn btn-primary' %>
+    <%= link_to "Adicionar Tarefas Concluídas", new_account_dashboard_finished_task_path(current_account, @dashboard), class: 'btn btn-primary' %>
+</div>
+
+<p></p>
+
+<div id="ld">
+    <%= link_to "Lista de Dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-sm' %>
 </div>

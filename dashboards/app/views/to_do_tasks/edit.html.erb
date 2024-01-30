@@ -1,0 +1,26 @@
+<% @dashboard = Dashboard.find_by(id: params["dashboard_id"]) %>
+<% @to_do_task = ToDoTask.find_by(id: params["id"]) %>
+
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Editar 'Tarefa a Fazer'</h1>
+    </div>
+
+    <div class="col-md-6 col-md-offset-3 col-xs-12">
+
+        <%= form_with model: [current_account, @dashboard, @to_do_task] do |form| %>
+
+            <%= render "dashboards/form", f:form %>
+
+            <%= form.submit "Alterar nome", class: "btn btn-primary" %>
+
+        <% end %>
+
+    </div>
+</div>
+
+<p></p>
+
+<div id="ld">
+    <%= link_to "Lista de Dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-sm' %>
+</div>
