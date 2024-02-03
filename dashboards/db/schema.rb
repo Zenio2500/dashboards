@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_30_173624) do
 
   create_table "dashboards", force: :cascade do |t|
     t.string "name"
+    t.decimal "reference"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id", null: false

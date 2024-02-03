@@ -1,5 +1,6 @@
 class ToDoTasksController < ApplicationController
     before_action :require_logged_in_account
+    before_action :set_refresh
 
     def new
         @to_do_task = ToDoTask.new
@@ -12,26 +13,25 @@ class ToDoTasksController < ApplicationController
             flash[:notice] = "Este nome de tarefa já está em uso neste dashboard."
             redirect_to new_account_dashboard_to_do_task_path
         elsif @to_do_task.save
-            flash[:notice] = "'Tarefa a Fazer' adicionada com sucesso."
             redirect_to account_dashboard_path(current_account, @dashboard)
         else
-            flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter."
+            flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter e, no máximo, 30 caracteres."
             redirect_to new_account_dashboard_to_do_task_path
         end
     end
 
     def update
         pam = to_do_task_params
-        if ToDoTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"])
+        if ToDoTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"]) || InProgressTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"]) || FinishedTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"])
             flash[:notice] = "Este nome de tarefa já está em uso neste dashboard."
             redirect_to edit_account_dashboard_to_do_task_path
         else
             @to_do_task = ToDoTask.find_by(id: params["id"], dashboard_id: params["dashboard_id"])
             if @to_do_task.update(pam)
-                flash[:notice] = "Tarefa atualizada com sucesso."
+                @dashboard = Dashboard.find_by(id: params["dashboard_id"])
                 redirect_to account_dashboard_path(current_account, @dashboard)
             else
-                flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter."
+                flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter e, no máximo, 30 caracteres."
                 redirect_to edit_account_dashboard_to_do_task_path
             end
         end
@@ -40,7 +40,6 @@ class ToDoTasksController < ApplicationController
     def destroy
         @to_do_task = ToDoTask.find_by(id: params["id"])
         @to_do_task.destroy
-        flash[:notice] = "Tarefa excluída com sucesso!"
         redirect_to account_dashboard_path(current_account, params["dashboard_id"])
     end
 

@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
     before_action :require_logged_in_account, only: [:show, :edit, :confirm_edit_get, :confirm_edit_post, :update, :confirm_destroy_get, :confirm_destroy_post, :destroyer, :destroy]
+    before_action :set_refresh
 
     def new
         if account_signed_in?
@@ -132,7 +133,9 @@ class AccountsController < ApplicationController
     end
 
     private
+
     def account_params()
         params.require(:account).permit(:email, :name, :password, :password_confirmation)
     end
+
 end

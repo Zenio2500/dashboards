@@ -1,5 +1,6 @@
 class DashboardsController < ApplicationController
     before_action :require_logged_in_account
+    before_action :set_refresh, except: [:show, :changeTasks]
     
     def new
         @dashboard = Dashboard.new
@@ -57,6 +58,51 @@ class DashboardsController < ApplicationController
         @dashboard.destroy
         flash[:notice] = "Dashboard excluído com sucesso!"
         redirect_to account_dashboards_path
+    end
+
+    def saveReference
+        #puts params
+        @dashboard = Dashboard.find_by(id: params["dashboard"])
+        #puts @dashboard.reference
+        @dashboard.reference = params["reference"]
+        #puts @dashboard.reference
+        @dashboard.save
+    end
+
+    def changeTasks
+        #puts params
+        @dashboard = Dashboard.find_by(id: params["dashboard"])
+        if params["posX"] < @dashboard.reference # todo
+            if InProgressTask.find_by(name: params["task"], dashboard_id: @dashboard.id)
+                InProgressTask.find_by(name: params["task"], dashboard_id: @dashboard.id).destroy
+                @to_do_task = ToDoTask.new(name: params["task"], dashboard_id: @dashboard.id)
+                @to_do_task.save
+            elsif FinishedTask.find_by(name: params["task"], dashboard_id: @dashboard.id)
+                FinishedTask.find_by(name: params["task"], dashboard_id: @dashboard.id).destroy
+                @to_do_task = ToDoTask.new(name: params["task"], dashboard_id: @dashboard.id)
+                @to_do_task.save
+            end
+        elsif params["posX"] > @dashboard.reference + 500 # finished
+            if InProgressTask.find_by(name: params["task"], dashboard_id: @dashboard.id)
+                InProgressTask.find_by(name: params["task"], dashboard_id: @dashboard.id).destroy
+                @finished_task = FinishedTask.new(name: params["task"], finishDate: DateTime.current.to_date, dashboard_id: @dashboard.id)
+                @finished_task.save
+            elsif ToDoTask.find_by(name: params["task"], dashboard_id: @dashboard.id)
+                ToDoTask.find_by(name: params["task"], dashboard_id: @dashboard.id).destroy
+                @finished_task = FinishedTask.new(name: params["task"], finishDate: DateTime.current.to_date, dashboard_id: @dashboard.id)
+                @finished_task.save
+            end
+        else
+            if ToDoTask.find_by(name: params["task"], dashboard_id: @dashboard.id)
+                ToDoTask.find_by(name: params["task"], dashboard_id: @dashboard.id).destroy
+                @in_progress_task = InProgressTask.new(name: params["task"], dashboard_id: @dashboard.id)
+                @in_progress_task.save
+            elsif FinishedTask.find_by(name: params["task"], dashboard_id: @dashboard.id)
+                FinishedTask.find_by(name: params["task"], dashboard_id: @dashboard.id).destroy
+                @in_progress_task = InProgressTask.new(name: params["task"], dashboard_id: @dashboard.id)
+                @in_progress_task.save
+            end
+        end
     end
 
     private

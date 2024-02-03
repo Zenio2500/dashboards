@@ -13,67 +13,239 @@
 
 <p></p>
 
-<div>
-  <h2>Tarefas a Fazer</h2>
-  <% @to_do_tasks.each do |to_do_task| %>
-    <p>
-        <div class="dashboard">
-          <strong>Nome:</strong>
-          <%= link_to to_do_task.name, edit_account_dashboard_to_do_task_path(current_account, @dashboard, to_do_task) %>
-          <%= form_for :session, url: account_dashboard_to_do_task_path(current_account, @dashboard, to_do_task), method: :delete do |form| %>
-            <p>
-            <%= form.submit 'Excluir', class: 'btn btn-primary' %>
-            </p>
-          <% end %>
+<div class="kanban">
+  <div class="task">
+    Tarefas a Fazer
+    <div class="column" id="todo">
+      <% @to_do_tasks.each do |to_do_task| %>
+        <div class="item" draggable="true">
+          <div>
+            <%= form_for to_do_task, url: edit_account_dashboard_to_do_task_path(current_account, @dashboard, to_do_task), method: :get do |form| %>
+              <%= form.submit to_do_task.name, class: 'btn btn-light btn-lg', id: to_do_task.name %>
+            <% end %>
+          </div>
+          <div>
+            <%= form_for :session, url: account_dashboard_to_do_task_path(current_account, @dashboard, to_do_task), method: :delete do |form| %>
+              <button class = "btn-light btn-sm">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            <% end %>
+          </div>
         </div>
-      </p>
-  <% end %>
-</div>
-
-<div>
-  <h2>Tarefas em Progresso</h2>
-  <% @in_progress_tasks.each do |in_progress_task| %>
-    <p>
-        <div class="dashboard">
-          <strong>Nome:</strong>
-          <%= link_to in_progress_task.name, edit_account_dashboard_in_progress_task_path(current_account, @dashboard, in_progress_task) %>
-          <%= form_for :session, url: account_dashboard_in_progress_task_path(current_account, @dashboard, in_progress_task), method: :delete do |form| %>
-            <p>
-            <%= form.submit 'Excluir', class: 'btn btn-primary' %>
-            </p>
-          <% end %>
+      <% end %>
+    </div>
+    <div>
+      <%= form_for :session, url: new_account_dashboard_to_do_task_path(current_account, @dashboard), method: :get do |form| %>
+        <button class = "btn-light btn-sm">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      <% end %>
+    </div>
+  </div>
+  <div class="task">
+    Tarefas em Progresso
+    <div class="column" id = "progress">
+      <% @in_progress_tasks.each do |in_progress_task| %>
+        <div class="item" draggable="true">
+            <div>
+              <%= form_for in_progress_task, url: edit_account_dashboard_in_progress_task_path(current_account, @dashboard, in_progress_task), method: :get do |form| %>
+                <%= form.submit in_progress_task.name, class: 'btn btn-light btn-lg', id: in_progress_task.name %>
+              <% end %>
+            </div>
+            <div>
+              <%= form_for :session, url: account_dashboard_in_progress_task_path(current_account, @dashboard, in_progress_task), method: :delete do |form| %>
+                <button class = "btn-light btn-sm">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              <% end %>
+            </div>
         </div>
-      </p>
-  <% end %>
-</div>
-
-<div>
-  <h2>Tarefas Concluídas</h2>
-  <% @finished_tasks.each do |finished_task| %>
-    <p>
-        <div class="dashboard">
-          <strong>Nome:</strong>
-          <%= link_to finished_task.name, edit_account_dashboard_finished_task_path(current_account, @dashboard, finished_task) %>
-          <%= form_for :session, url: account_dashboard_finished_task_path(current_account, @dashboard, finished_task), method: :delete do |form| %>
-            <p>
-            <%= form.submit 'Excluir', class: 'btn btn-primary' %>
-            </p>
-          <% end %>
-        </div>
-      </p>
-  <% end %>
-</div>
-
-<p></p>
-
-<div>
-    <%= link_to "Adicionar Tarefas a Fazer", new_account_dashboard_to_do_task_path(current_account, @dashboard), class: 'btn btn-primary' %>
-    <%= link_to "Adicionar Tarefas em Progresso", new_account_dashboard_in_progress_task_path(current_account, @dashboard), class: 'btn btn-primary' %>
-    <%= link_to "Adicionar Tarefas Concluídas", new_account_dashboard_finished_task_path(current_account, @dashboard), class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+    <div>
+      <%= form_for :session, url: new_account_dashboard_in_progress_task_path(current_account, @dashboard), method: :get do |form| %>
+        <button class = "btn-light btn-sm">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      <% end %>
+    </div>
+  </div>
+  <div class="task">
+    Tarefas Concluídas
+      <div class="column" id="finished">
+        <% @finished_tasks.each do |finished_task| %>
+          <div class="item" draggable="true">
+            <div>
+              <%= form_for finished_task, url: edit_account_dashboard_finished_task_path(current_account, @dashboard, finished_task), method: :get do |form| %>
+                <%= form.submit finished_task.name, class: 'btn btn-light btn-lg', id: finished_task.name %>
+              <% end %>
+            </div>
+            <div>
+              <%= form_for :session, url: account_dashboard_finished_task_path(current_account, @dashboard, finished_task), method: :delete do |form| %>
+                <button class = "btn-light btn-sm">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        <%= form_for :session, url: new_account_dashboard_finished_task_path(current_account, @dashboard), method: :get do |form| %>
+          <button class = "btn-light btn-sm">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        <% end %>
+      </div>
+  </div>
 </div>
 
 <p></p>
 
 <div id="ld">
-    <%= link_to "Lista de Dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-sm' %>
+    <%= link_to "Lista de Dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-sm', id: @dashboard.id %>
 </div>
+
+<script>
+
+//-> Posição dos elementos em pixels
+
+    // Obtém a referência da coluna 'progresso'
+    var reference = document.getElementById('progress');
+
+    // Função para obter a posição da coluna 'progresso'
+    function obterPosicaoReference(reference) {
+      var posicao = reference.getBoundingClientRect();
+      return {
+          top: posicao.top + window.pageYOffset,
+          left: posicao.left + window.pageXOffset
+      };
+    }
+
+  // Atualiza a posição da coluna 'progresso'(posição de referência)
+  function atualizarPosicaoReference() {
+    var posicaoReference = obterPosicaoReference(reference);
+    //document.getElementById('pos').innerText = 'Topo: ' + posicaoReference.top + 'px, Esquerda: ' + posicaoReference.left + 'px' + '\n';
+
+    // Seleciona todos os elementos 'ancoras'
+    var as = document.querySelectorAll('a');
+    // Para armazenar o id do dashboard
+    var dashboardID;
+
+    // Itera sobre os elementos input
+    as.forEach(function(a) {
+    // Obtém o id do elemento 'lista de dashboards', isto é, o id do dashboard
+      if (a.id > 0){
+        //document.getElementById('pos').innerText += 'ID do dashboard:' + a.id + "\n";
+        dashboardID = a.id;
+      }
+    });
+
+    // Enviar dados para o controlador do dashboard usando AJAX
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/save_reference', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader("X-CSRF-Token", token);
+    xhr.send(JSON.stringify({ reference: posicaoReference.left, dashboard: dashboardID }));
+
+  }
+
+  // Chama a função para atualizar a posição de referência(coluna 'progresso') quando a página for carregada
+  window.addEventListener('load', function() {
+      atualizarPosicaoReference();
+  });
+
+  // Chama a função para atualizar a posição de referência(coluna 'progresso') quando a janela for redimensionada
+  window.addEventListener('resize', function() {
+    atualizarPosicaoReference();
+  });
+
+  //-> Tratamento do "arrastar e soltar"
+  const columns = document.querySelectorAll(".column");
+  
+  document.addEventListener("dragstart", (e) => {
+    e.target.classList.add("dragging");
+  });
+  
+  // Atualizar o banco de dados dependendo de onde a tarefa foi solta('dropada')
+  document.addEventListener("dragend", (e) => {
+    e.target.classList.remove("dragging");
+    atualizarPosicaoReference();
+    atualizarBancoDados();
+    window.location.reload();
+  });
+  
+  columns.forEach((item) => {
+    item.addEventListener("dragover", (e) => {
+      const dragging = document.querySelector(".dragging");
+      const applyAfter = getNewPosition(item, e.clientY);
+
+      if (applyAfter) {
+        applyAfter.insertAdjacentElement("afterend", dragging);
+      } else {
+        item.prepend(dragging);
+      }
+    });
+  });
+  
+  function getNewPosition(column, posY) {
+    const cards = column.querySelectorAll(".item:not(.dragging)");
+    let result;
+
+    for (let refer_card of cards) {
+      const box = refer_card.getBoundingClientRect();
+      const boxCenterY = box.y + box.height / 2;
+  
+      if (posY >= boxCenterY) result = refer_card;
+    }
+  
+    return result;
+  }
+
+  //-> Tratamento no Banco de Dados
+  function atualizarBancoDados() {
+    // Seleciona todos os elementos input
+    var inputs = document.querySelectorAll('input');
+
+    // Seleciona todos os elementos 'ancoras'
+    var as = document.querySelectorAll('a');
+    // Para armazenar o id do dashboard
+    var dashboardID;
+
+    // Itera sobre os elementos input
+    as.forEach(function(a) {
+      // Obtém o id do elemento 'lista de dashboards', isto é, o id do dashboard
+      if (a.id > 0){
+        //document.getElementById('pos').innerText += 'ID do dashboard:' + a.id + "\n";
+        dashboardID = a.id;
+      }
+    });
+
+    // Enviar dados para o servidor Ruby on Rails usando AJAX
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var xhr = new XMLHttpRequest();
+
+    // Itera sobre os elementos input
+    inputs.forEach(function(input) {
+    // Obtém o value(nome da tarefa) de cada elemento input do tipo 'submit' e envia para o controlador do dashboard
+      if (input.type == 'submit'){
+        xhr.open('POST', '/change_tasks', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader("X-CSRF-Token", token);
+        //document.getElementById('pos').innerText += 'ID do elemento input:' + input.value + 'PosX: ' + input.getBoundingClientRect().left + "\n";
+        xhr.send(JSON.stringify({ task: input.value, posX: input.getBoundingClientRect().left, dashboard: dashboardID }));
+      }
+    });
+
+  }
+
+</script>
+<h2 id='pos'></h2>
+<script>
+  //-> Atualização da página uma vez para o script ser carregado completamente
+  <% if session[:refresh] == 1 %>
+    window.location.reload();
+    <% session[:refresh] = 0 %>
+  <% end %>
+</script>

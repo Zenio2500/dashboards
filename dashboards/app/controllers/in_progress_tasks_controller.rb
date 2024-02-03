@@ -1,5 +1,6 @@
 class InProgressTasksController < ApplicationController
     before_action :require_logged_in_account
+    before_action :set_refresh
 
     def new
         @in_progress_task = InProgressTask.new
@@ -12,26 +13,25 @@ class InProgressTasksController < ApplicationController
             flash[:notice] = "Este nome de tarefa já está em uso neste dashboard."
             redirect_to new_account_dashboard_in_progress_task_path
         elsif @in_progress_task.save
-            flash[:notice] = "'Tarefa em Progresso' adicionada com sucesso."
             redirect_to account_dashboard_path(current_account, @dashboard)
         else
-            flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter."
+            flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter e, no máximo, 30 caracteres."
             redirect_to new_account_dashboard_in_progress_task_path
         end
     end
 
     def update
         pam = in_progress_task_params
-        if InProgressTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"])
+        if InProgressTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"])  || ToDoTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"]) || FinishedTask.find_by(name: pam["name"], dashboard_id: params["dashboard_id"])
             flash[:notice] = "Este nome de tarefa já está em uso neste dashboard."
             redirect_to edit_account_dashboard_in_progress_task_path
         else
             @in_progress_task = InProgressTask.find_by(id: params["id"], dashboard_id: params["dashboard_id"])
             if @in_progress_task.update(pam)
-                flash[:notice] = "Tarefa atualizada com sucesso."
+                @dashboard = Dashboard.find_by(id: params["dashboard_id"])
                 redirect_to account_dashboard_path(current_account, @dashboard)
             else
-                flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter."
+                flash[:notice] = "O nome da tarefa deve ter, no mínimo, 1 caracter e, no máximo, 30 caracteres."
                 redirect_to edit_account_dashboard_in_progress_task_path
             end
         end
@@ -40,7 +40,6 @@ class InProgressTasksController < ApplicationController
     def destroy
         @in_progress_task = InProgressTask.find_by(id: params["id"])
         @in_progress_task.destroy
-        flash[:notice] = "Tarefa excluída com sucesso!"
         redirect_to account_dashboard_path(current_account, params["dashboard_id"])
     end
 

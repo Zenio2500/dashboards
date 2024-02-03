@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+    before_action :set_refresh
 
     def new
         if account_signed_in?

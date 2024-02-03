@@ -4,10 +4,15 @@ class ApplicationController < ActionController::Base
     include SessionsHelper
 
     private
+
     def require_logged_in_account
       unless account_signed_in?
         redirect_to entry_path
       end
+    end
+
+    def set_refresh
+      session[:refresh] = 1
     end
 
 end
