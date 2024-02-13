@@ -7,7 +7,7 @@ class DashboardsController < ApplicationController
     end
 
     def index
-        @dashboards = current_account.dashboards
+        @dashboards = Dashboard.where(["account_id = ?", current_account.id]).order("name ASC")
     end
 
     def create
@@ -58,6 +58,13 @@ class DashboardsController < ApplicationController
         @dashboard.destroy
         flash[:notice] = "Dashboard excluído com sucesso!"
         redirect_to account_dashboards_path
+    end
+
+    def show
+        @dashboard = Dashboard.find_by(id: params["id"])
+        @to_do_tasks = ToDoTask.where(["dashboard_id = ?", @dashboard.id]).order("name ASC")
+        @in_progress_tasks = InProgressTask.where(["dashboard_id = ?", @dashboard.id]).order("name ASC")
+        @finished_tasks = FinishedTask.where(["dashboard_id = ?", @dashboard.id]).order("name ASC")
     end
 
     def saveReference

@@ -1,8 +1,3 @@
-<% @dashboard = Dashboard.find_by(id: params["id"]) %>
-<% @to_do_tasks = @dashboard.to_do_tasks %>
-<% @in_progress_tasks = @dashboard.in_progress_tasks %>
-<% @finished_tasks = @dashboard.finished_tasks %>
-
 <h1>
   <%= @dashboard.name %>
 </h1>
@@ -70,7 +65,7 @@
       <% end %>
     </div>
   </div>
-  <div class="task">
+  <div class="task" >
     Tarefas Concluídas
       <div class="column" id="finished">
         <% @finished_tasks.each do |finished_task| %>
@@ -102,150 +97,77 @@
 
 <p></p>
 
+<p class="<%= @to_do_tasks.count %>" id="TDT"></p>
+
+<p class="<%= @in_progress_tasks.count %>" id="IPT"></p>
+
+<p class="<%= @finished_tasks.count %>" id="FT"></p>
+
+<canvas id="tasks"></canvas>
+
+<canvas id="finishedTasks"></canvas>
+
 <div id="ld">
-    <%= link_to "Lista de Dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-sm', id: @dashboard.id %>
+  <%= link_to "Lista de Dashboards", account_dashboards_path(current_account), class: 'btn btn-primary btn-sm', id: @dashboard.id %>
 </div>
 
 <script>
-
-//-> Posição dos elementos em pixels
-
-    // Obtém a referência da coluna 'progresso'
-    var reference = document.getElementById('progress');
-
-    // Função para obter a posição da coluna 'progresso'
-    function obterPosicaoReference(reference) {
-      var posicao = reference.getBoundingClientRect();
-      return {
-          top: posicao.top + window.pageYOffset,
-          left: posicao.left + window.pageXOffset
-      };
-    }
-
-  // Atualiza a posição da coluna 'progresso'(posição de referência)
-  function atualizarPosicaoReference() {
-    var posicaoReference = obterPosicaoReference(reference);
-    //document.getElementById('pos').innerText = 'Topo: ' + posicaoReference.top + 'px, Esquerda: ' + posicaoReference.left + 'px' + '\n';
-
-    // Seleciona todos os elementos 'ancoras'
-    var as = document.querySelectorAll('a');
-    // Para armazenar o id do dashboard
-    var dashboardID;
-
-    // Itera sobre os elementos input
-    as.forEach(function(a) {
-    // Obtém o id do elemento 'lista de dashboards', isto é, o id do dashboard
-      if (a.id > 0){
-        //document.getElementById('pos').innerText += 'ID do dashboard:' + a.id + "\n";
-        dashboardID = a.id;
-      }
-    });
-
-    // Enviar dados para o controlador do dashboard usando AJAX
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/save_reference', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader("X-CSRF-Token", token);
-    xhr.send(JSON.stringify({ reference: posicaoReference.left, dashboard: dashboardID }));
-
-  }
-
-  // Chama a função para atualizar a posição de referência(coluna 'progresso') quando a página for carregada
-  window.addEventListener('load', function() {
-      atualizarPosicaoReference();
-  });
-
-  // Chama a função para atualizar a posição de referência(coluna 'progresso') quando a janela for redimensionada
-  window.addEventListener('resize', function() {
-    atualizarPosicaoReference();
-  });
-
-  //-> Tratamento do "arrastar e soltar"
-  const columns = document.querySelectorAll(".column");
-  
-  document.addEventListener("dragstart", (e) => {
-    e.target.classList.add("dragging");
-  });
-  
-  // Atualizar o banco de dados dependendo de onde a tarefa foi solta('dropada')
-  document.addEventListener("dragend", (e) => {
-    e.target.classList.remove("dragging");
-    atualizarPosicaoReference();
-    atualizarBancoDados();
-    window.location.reload();
-  });
-  
-  columns.forEach((item) => {
-    item.addEventListener("dragover", (e) => {
-      const dragging = document.querySelector(".dragging");
-      const applyAfter = getNewPosition(item, e.clientY);
-
-      if (applyAfter) {
-        applyAfter.insertAdjacentElement("afterend", dragging);
-      } else {
-        item.prepend(dragging);
-      }
-    });
-  });
-  
-  function getNewPosition(column, posY) {
-    const cards = column.querySelectorAll(".item:not(.dragging)");
-    let result;
-
-    for (let refer_card of cards) {
-      const box = refer_card.getBoundingClientRect();
-      const boxCenterY = box.y + box.height / 2;
-  
-      if (posY >= boxCenterY) result = refer_card;
-    }
-  
-    return result;
-  }
-
-  //-> Tratamento no Banco de Dados
-  function atualizarBancoDados() {
-    // Seleciona todos os elementos input
-    var inputs = document.querySelectorAll('input');
-
-    // Seleciona todos os elementos 'ancoras'
-    var as = document.querySelectorAll('a');
-    // Para armazenar o id do dashboard
-    var dashboardID;
-
-    // Itera sobre os elementos input
-    as.forEach(function(a) {
-      // Obtém o id do elemento 'lista de dashboards', isto é, o id do dashboard
-      if (a.id > 0){
-        //document.getElementById('pos').innerText += 'ID do dashboard:' + a.id + "\n";
-        dashboardID = a.id;
-      }
-    });
-
-    // Enviar dados para o servidor Ruby on Rails usando AJAX
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    var xhr = new XMLHttpRequest();
-
-    // Itera sobre os elementos input
-    inputs.forEach(function(input) {
-    // Obtém o value(nome da tarefa) de cada elemento input do tipo 'submit' e envia para o controlador do dashboard
-      if (input.type == 'submit'){
-        xhr.open('POST', '/change_tasks', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader("X-CSRF-Token", token);
-        //document.getElementById('pos').innerText += 'ID do elemento input:' + input.value + 'PosX: ' + input.getBoundingClientRect().left + "\n";
-        xhr.send(JSON.stringify({ task: input.value, posX: input.getBoundingClientRect().left, dashboard: dashboardID }));
-      }
-    });
-
-  }
-
+//-> Atualização da página uma vez para o script ser carregado completamente
+<% if session[:refresh] == 1 %>
+  window.location.reload();
+  <% session[:refresh] = 0 %>
+<% end %>
 </script>
-<h2 id='pos'></h2>
+
 <script>
-  //-> Atualização da página uma vez para o script ser carregado completamente
-  <% if session[:refresh] == 1 %>
-    window.location.reload();
-    <% session[:refresh] = 0 %>
+// -> Gráfico de linha
+window.addEventListener('load', function() {
+
+  var ctx = document.getElementById('finishedTasks').getContext('2d'); // Obtendo o elemento 'canva'
+
+  var labels = []; // Deve ser carregado com as datas existentes no Banco de Dados
+  var data = []; // Deve ser carregado com a frequência das datas existentes no Banco de Dados
+
+  const mp = new Map(); // Estrutura 'map' para auxiliar; Data(key) -> Frequência(value)
+
+  <% @finished_tasks.each do |finished_task| %>
+    mp.set("<%= finished_task.finishDate %>", 0); // Usando as datas como chave para eliminar repetições e ajustando frequências como 0
   <% end %>
+
+  <% @finished_tasks.each do |finished_task| %>
+    mp.set("<%= finished_task.finishDate %>", mp.get("<%= finished_task.finishDate %>")+1); // Cálculo de frequências
+  <% end %>
+
+  mp.forEach( function (value, key) {
+    labels.push(key); // Preenchimento das 'labels' com datas não repetidas
+  });
+
+  labels.sort(); // Ordenação crescente das datas
+
+  labels.forEach(function (item, indice, array) {
+    data.push(mp.get(item)); // Preenchimento de 'data' com as frequências de cada data
+  });
+
+  var myTimeGraph = new Chart(ctx, { // Gráfico de linha
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Tarefas Concluídas',
+        data: data,
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    },
+    option: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+});
+
 </script>

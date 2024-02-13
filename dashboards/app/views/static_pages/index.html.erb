@@ -3,10 +3,15 @@
 <div class="jumbotron">
   <h1>Dashboards</h1>
   <% if account_signed_in? %>
-    <div>Esta plataforma permite que você...</div>
+    <p>
+      Esta plataforma permite que você crie vários Dashboards, com gráficos informativos sobre suas tarefas.
+    </p>
+    <p>
+      Comece agora mesmo clicando em 'Menu' >> 'Meus Dashboars' >> 'Novo Dashboard' para, então, definir e criar um nome para o seu Dashboard.
+    </p>
   <% else %>
     <p>
-      Gerencie seus projetos em qualquer lugar!
+      Gerencie suas tarefas em qualquer lugar!
     </p>
     <p>
       <%= link_to 'Crie Sua Conta', new_account_path, class: 'btn btn-primary btn-lg' %>

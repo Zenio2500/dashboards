@@ -1,5 +1,4 @@
-Rails.application.routes.draw do
-  resources :kanbans
+Rails.application.routes.draw do  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -9,6 +8,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   root "static_pages#index"
+  get "create2" => "accounts#new2"
   get "about" => "static_pages#about"
   get "contact" => "static_pages#contact"
   get "confirm/edit" => "accounts#confirm_edit_get"
@@ -19,8 +19,10 @@ Rails.application.routes.draw do
   get "entry" => "sessions#new"
   post "entry" => "sessions#create"
   get "exit" => "sessions#destroy"
+  
   post "save_reference" => "dashboards#saveReference"
   post "change_tasks" => "dashboards#changeTasks"
+
   resources :accounts, only: [:show, :new, :edit, :create, :destroy, :update]
   resources :accounts do
     resources :dashboards, only: [:index, :show, :new, :create, :edit, :update, :destroy]

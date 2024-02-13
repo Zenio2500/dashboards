@@ -226,8 +226,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sortablejs-rails (1.15.0)
-      rails (>= 6.0.0, < 8)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -282,7 +280,6 @@ DEPENDENCIES
   rails (~> 7.1.2)
   sassc-rails (>= 2.1.0)
   selenium-webdriver
-  sortablejs-rails (~> 1.15)
   sprockets-rails
   stimulus-rails
   turbo-rails
